@@ -2,7 +2,8 @@
 
 
 ### Ex. No. :7
-## Date: 
+## Name : M.RAJESHKANNAN
+## Date: 5/11/2022
 ### Interfacing LM35 Temperature sensor and calculate the sensitivity of the output
 
 ## Aim: 
@@ -156,7 +157,7 @@ This bit is set to 1 when an A/D conversion completes. It is cleared when this r
  
 
 
-Procedure:
+## Procedure:
 Steps for Analog to Digital Conversion
 1.	Configure the ADxCR (ADC Control Register) according to the need of application.
 2.	Start ADC conversion by writing appropriate value to START bits in ADxCR. (Example, writing 001 to START bits of the register 26:24, conversion is started immediately).
@@ -192,35 +193,64 @@ Low-Impedance Output, 0.1 Ω for 1-mA Load
 Figure -08 Circuit diagram of interfacing an LM35  with ADC input pin 
 
 ## Kiel - Program 
- 
+```
+#include <lpc214x.h>
+#include "LCD.h"
+#include "ADC.h"
+unsigned int val;
+/*void delay_ms(unsigned int count)
+{
+   unsigned int i=0,j=0;
+   for(j=0;j<count;j++)
+   {
+   	for(i=0;i<count;i++);
+   }
+}*/
+int main()
+{
+   IO1DIR = 0xffffffff;
+   IO0DIR = 0x00000000;
+   PINSEL0 = 0x0300;
+   VPBDIV = 0x02;
+   lcd_init();
+   show(" ADC Value:");
+   while(1)
+   {
+   	cmd(0x8b);
+   	//delay_ms(1000);
+   	val=adc(0,6);
+   	dat((val/1000)+48);
+   	dat(((val/100)%10)+48);
+   	dat(((val/10)%10)+48);
+   	dat((val%10)+48);
+   }
+}
+
+```
 ## Tabulations and graph 
 Calculation of sensitivity 
 % of sensitivity is   S=  (T2-T1)/(A2-A1)*100
+![Table](https://user-images.githubusercontent.com/93901857/200128296-a46c4e19-88d8-435d-ab03-4e0d8f5cea36.jpg)
 
 
+![graph](https://user-images.githubusercontent.com/93901857/200128294-d6fd501e-b8a7-425c-9211-8327d6e96e1b.jpg)
 
-
-SL NO	Temperature value in °C (T)	ADC VALUE (A)	Sensitivity 
-1			-
-2			
-3			
-4			
-5			
-6			
-7			
-8			
-9			
-10			
-
-
- 
 Figure -09 graph between temperature values and ADC output 
 
+## Output
+
+### Before simulation
+![1](https://user-images.githubusercontent.com/93901857/200128402-2df4906f-06b2-4e90-9f8d-8920f9261153.jpg)
+
+### After simulation
+![2](https://user-images.githubusercontent.com/93901857/200128289-3fdc997c-4e78-4ad3-8664-c9c949960e59.jpg)
+
+### Circuit Diagram
+![3](https://user-images.githubusercontent.com/93901857/200128291-faa45442-1baf-4da0-9cf6-f1c58f24da44.jpg)
 
 ## Result :
 Temperature sensor LM35 is interfaced to LPC2148 and its output is measured 
 
-## Output screen shots :
 
 
 
